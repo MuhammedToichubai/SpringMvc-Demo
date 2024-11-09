@@ -3,6 +3,7 @@ package peaksoft.config;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -23,22 +24,18 @@ import java.util.Properties;
 @ComponentScan(basePackages = "peaksoft")
 @EnableTransactionManagement
 @PropertySource("classpath:application.properties")
+@RequiredArgsConstructor
 public class HibernateConfig {
 
     private final Environment environment;
-
-    public HibernateConfig(Environment environment) {
-        this.environment = environment;
-    }
-
 
     @Bean
     public DataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(Objects.requireNonNull(environment.getProperty("database.driver_class")));
         dataSource.setUrl(environment.getProperty("database.url"));
-        dataSource.setUsername(environment.getProperty("database.user"));
-        dataSource.setPassword(environment.getProperty("database.pass"));
+        dataSource.setUsername(environment.getProperty("database.username"));
+        dataSource.setPassword(environment.getProperty("database.password"));
         return dataSource;
     }
 
